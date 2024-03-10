@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Movies Website</title>
+    <style>
+        .discover-button {
+            display: inline-block;
+            padding: 10px 20px; /* Adjust padding as needed */
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            border: 2px solid #000000;
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        
+        .discover-button:hover {
+            background-color: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="header-title">Movie Recommendation</h1>
+        <a href="/home" class="discover-button">Home</a>
+        <form id="form" method="POST" action="/discover">  <!-- Added method and action attributes -->
+            <input type="text" placeholder="Search" id="search" class="search" name="search">  <!-- Added name attribute -->
+            <input type="submit" value="Search">  <!-- Added submit button -->
+        </form>
+    </header>
+    <section>
+        <h2 class="discover-title">Discover Movies</h2>
+        <div class="movie-list-container">
+            {% for movie in data %}
+            <div class="movie-card">
+                <div class="movie-content">
+                    <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
+                    <h3 class="movie-title">{{movie.title}}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section id="recommendations">
+        <h2 class="discover-title">Recommended Movies</h2>
+        <div class="movie-list-container" id="recommended-movies">
+            {% if search_query %}
+                {% for movie in recommended_movies %}
+                <div class="movie-card">
+                    <div class="movie-content">
+                        <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
+                        <h3 class="movie-title">{{movie.title}}</h3>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+
+</body>
+<script>
+    // JavaScript code to set the display property based on the search_query value
+    document.addEventListener('DOMContentLoaded', function() {
+        var recommendationsSection = document.getElementById('recommendations');
+        recommendationsSection.style.display = '{{ "block" if search_query else "none" }}';
+    });
+</script>
+</html>

@@ -1,0 +1,50 @@
+flask
+numpy
+pandas
+ast
+sklearn.feature_extraction.text 
+nltk
+nltk.stem.porter
+sklearn.metrics.pairwise
+pickle
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Example</title>
+    <style>
+        /* Basic styling for buttons and text */
+        .button-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .text {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button">{{ movie }}</button>
+        <button class="button">{{ movie }}</button>
+        <button class="button">{{ movie }}</button>
+        <p class="text">Some text below the buttons...</p>
+    </div>
+</body>
+</html>
