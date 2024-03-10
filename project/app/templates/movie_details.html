@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Movie Details</title>
+    <style>
+        body {
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h1 {
+            font-size: 32px; /* Reduced font size for the title */
+            margin-bottom: 20px;
+            color: #ffb366; /* Title color */
+        }
+
+        .details-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items to the start (top) of the container */
+        }
+
+        .details-info {
+            max-width: 60%;
+        }
+
+        .details-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .title-text {
+            color: #99ff99; /* Title text color */
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(255, 252, 102, 0.877);
+        }
+
+        .genre-text {
+            color: #ff6666; /* Genre text color */
+        }
+
+        .overview-text {
+            color: #ff6666; /* Overview text color */
+        }
+
+        .cast-crew-text {
+            color: #ff6666; /* Cast and Crew text color */
+        }
+
+        .movie-poster {
+            max-width: 25%;
+            height: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+            margin-right: 40px; /* Adjust the margin to move the poster to the left */
+        }
+
+        /* Add hover effect for more highlight */
+        .movie-poster:hover {
+            transform: scale(1.1); /* Scale up on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .genre-box {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #3aa7f0; /* You can change the background color */
+            color: #fff;
+        }
+
+        .overview {
+            white-space: pre-line;
+        }
+
+        .cast-crew-list {
+            list-style: circle;
+            padding: 0;
+            margin: 0;
+        }
+
+        .cast-crew-item {
+            font-size: 16px; /* Adjust font size for cast and crew names */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Details</h1>
+
+    <div class="details-container">
+        <div class="details-info">
+            <p class="details-text title-text"><strong>Title:</strong> <strong>{{ movie_details.title }}</strong></p>
+            <p class="details-text genre-text"><strong>Genres:</strong></p>
+            {% for genre in movie_details.genres.replace('[', '').replace(']', '').replace("'", "").split(', ') %}
+                <span class="genre-box">{{ genre }}</span>
+            {% endfor %}
+            <p class="details-text overview-text"><strong>Overview:</strong></p>
+            <p class="details-text">{{ movie_details.overview }}</p>
+            <p class="details-text cast-crew-text"><strong>Cast:</strong></p>
+            <ul class="cast-crew-list">
+                {% for actor in movie_details.cast.replace('[', '').replace(']', '').replace("'", "").split(', ') %}
+                    <li class="cast-crew-item">{{ actor }}</li>
+                {% endfor %}
+            </ul>
+            <p class="details-text cast-crew-text"><strong>Director:</strong></p>
+            <ul class="cast-crew-list">
+                {% for member in movie_details.crew.replace('[', '').replace(']', '').replace("'", "").split(', ') %}
+                    <li class="cast-crew-item">{{ member }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <img src="https://image.tmdb.org/t/p/w500/{{ movie_details.poster_path }}" alt="Movie Poster" class="movie-poster">
+    </div>
+</body>
+
+</html>

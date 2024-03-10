@@ -74,6 +74,8 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: var(--secondary-color);
     overflow: hidden; /* Hide overflowing content (titles) */
+    text-decoration: none;
+    color: inherit;
 }
 
 .movie-content {
@@ -102,4 +104,20 @@ section {
 h2 {
     text-align: center; /* Center the movie title */
     margin-top: 0.5rem; /* Add some spacing between the poster and title */
+}
+
+.overview{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: #fff;
+    padding: 1rem;
+    max-height: 100%;
+    transform:translateY(101%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.movie:hover .overview{
+    transform:translateY(0);
 }

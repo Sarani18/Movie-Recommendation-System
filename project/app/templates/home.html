@@ -42,7 +42,7 @@
         <h2 class="discover-title">Movies for you</h2>
         <div class="movie-list-container">
             {% for movie in data %}
-            <div class="movie-card">
+            <div class="movie-card" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                 <div class="movie-content">
                     <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
                     <h3 class="movie-title">{{movie.title}}</h3>
@@ -57,7 +57,7 @@
         <div class="movie-list-container" id="recommended-movies">
             {% if search_query %}
                 {% for movie in recommended_movies %}
-                <div class="movie-card">
+                <div class="movie-card" onclick="if ('{{ movie.movie_id }}') handleMovieClick('{{ movie.movie_id }}')" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                     <div class="movie-content">
                         <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
                         <h3 class="movie-title">{{movie.title}}</h3>
@@ -88,5 +88,32 @@
         var recommendationsSection = document.getElementById('recommendations');
         recommendationsSection.style.display = '{{ "block" if search_query else "none" }}';
     });
+</script>
+
+<script>
+    function showOverview(event, overview) {
+        var movieCard = event.currentTarget;
+        var overviewDiv = movieCard.querySelector('.overview');
+        var overviewContent = overviewDiv.querySelector('p');
+        var overviewTitle = overviewDiv.querySelector('h4');
+
+        overviewTitle.textContent = 'Overview';
+        overviewContent.textContent = overview;
+        overviewDiv.style.transform = 'translateY(0)';
+        overviewDiv.style.fontSize = '12px'; // Adjust the font size as needed
+    }
+
+    function hideOverview(event) {
+        var movieCard = event.currentTarget;
+        var overviewDiv = movieCard.querySelector('.overview');
+        overviewDiv.style.transform = 'translateY(101%)';
+    }
+</script>
+
+<script>
+    function handleMovieClick(movie_id) {
+        var movieDetailsUrl = "{{ url_for('movie_details', movie_id=0) }}" + movie_id;
+        window.location.href = movieDetailsUrl.replace('0', '');  // Remove the leading 0
+    }
 </script>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <h2>Registration</h2>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,8 +11,9 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
         }
 
@@ -21,13 +22,27 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            width: 600px; /* Increased width */
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .left-section,
+        .right-section {
+            padding: 0 20px; /* Add padding for spacing */
+        }
+
+        .middle-line {
+            border-top: 1px solid #ccc;
+            margin: 20px 0; /* Add margin for spacing */
         }
 
         h1 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
+            font-size: 24px; /* Adjust the font size */
         }
 
         label {
@@ -39,7 +54,7 @@
 
         input[type="text"],
         input[type="password"] {
-            width: calc(100% - 12px);
+            width: 100%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
@@ -47,18 +62,25 @@
         }
 
         .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
             margin-bottom: 20px;
         }
 
         .checkbox-group label {
-            display: inline-block;
-            margin-right: 20px;
-            font-weight: normal;
+            flex-basis: 50%; /* Two genres per row */
+            margin-bottom: 8px;
+            font-weight: bold;
             color: #666;
+        }
+
+        .checkbox-group label input {
+            margin-right: 5px; /* Add margin for spacing */
         }
 
         .button-group {
             text-align: center;
+            width: 100%;
         }
 
         button[type="submit"] {
@@ -81,23 +103,38 @@
 <form method="post" action="/register" onsubmit="return validateForm()">
     <h1>Registration</h1>
 
-    <label for="name">Name:</label>
-    <input type="text" name="name" required>
-    
-    <label for="username">Username:</label>
-    <input type="text" name="username" required>
-    
-    <label for="password">Password:</label>
-    <input type="password" name="password" required>
+    <div class="left-section">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required>
+        
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+    </div>
 
-    <div class="checkbox-group">
-        <label>Interested Genres:</label>
-        <input type="checkbox" name="genre" value="Action"> Action
-        <input type="checkbox" name="genre" value="Drama"> Drama
-        <input type="checkbox" name="genre" value="Drama"> Drama
-        <input type="checkbox" name="genre" value="Drama"> Drama
-        <input type="checkbox" name="genre" value="Drama"> Drama
-        <!-- Add more genre options as needed -->
+    <div class="middle-line"></div>
+
+    <div class="right-section">
+        <label class="checkbox-group-title">Interested Genres:</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="genre" value="Drama"> Drama</label>
+            <label><input type="checkbox" name="genre" value="Comedy"> Comedy</label>
+            <label><input type="checkbox" name="genre" value="Thriller"> Thriller</label>
+            <label><input type="checkbox" name="genre" value="Action"> Action</label>
+            <label><input type="checkbox" name="genre" value="Romance"> Romance</label>
+            <label><input type="checkbox" name="genre" value="Adventure"> Adventure</label>
+            <label><input type="checkbox" name="genre" value="Crime"> Crime</label>
+            <label><input type="checkbox" name="genre" value="Science Fiction"> Science Fiction</label>
+            <label><input type="checkbox" name="genre" value="Horror"> Horror</label>
+            <label><input type="checkbox" name="genre" value="Family"> Family</label>
+            <label><input type="checkbox" name="genre" value="Fantasy"> Fantasy</label>
+            <label><input type="checkbox" name="genre" value="Mystery"> Mystery</label>
+            <label><input type="checkbox" name="genre" value="Animation"> Animation</label>
+            <label><input type="checkbox" name="genre" value="History"> History</label>
+            <label><input type="checkbox" name="genre" value="Documentary"> Documentary</label>
+        </div>
     </div>
 
     <div class="button-group">
