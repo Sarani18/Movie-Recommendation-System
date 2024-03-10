@@ -60,7 +60,7 @@
         <div class="movie-list-container" id="recommended-movies">
             {% if search_query %}
                 {% for movie in recommended_movies %}
-                <div class="movie-card" onclick="if ('{{ movie.movie_id }}') handleMovieClick('{{ movie.movie_id }}')" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
+                <div class="movie-card" onclick="handleMovieClick('{{ movie.movie_id }}')" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                     <a href="{{ url_for('movie_details', movie_id=movie.movie_id) }}" class="movie-content">
                         <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
                         <h3 class="movie-title">{{movie.title}}</h3>
