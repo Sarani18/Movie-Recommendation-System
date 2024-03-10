@@ -36,6 +36,7 @@
             <input type="submit" value="Search">  <!-- Added submit button -->
         </form>
     </header>
+    {% if search_query is none %}
     <section>
         <h2 class="discover-title">Discover Movies</h2>
         <div class="movie-list-container">
@@ -49,6 +50,7 @@
             {% endfor %}
         </div>
     </section>
+    {% endif %}
     <section id="recommendations">
         <h2 class="discover-title">Recommended Movies</h2>
         <div class="movie-list-container" id="recommended-movies">

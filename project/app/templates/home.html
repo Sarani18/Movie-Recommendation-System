@@ -37,6 +37,7 @@
             <input type="submit" value="Search">  <!-- Added submit button -->
         </form>
     </header>
+    {% if search_query is none %}
     <section>
         <h2 class="discover-title">Movies for you</h2>
         <div class="movie-list-container">
@@ -50,6 +51,7 @@
             {% endfor %}
         </div>
     </section>
+    {% endif %}
     <section id="recommendations">
         <h2 class="discover-title">Recommended Movies</h2>
         <div class="movie-list-container" id="recommended-movies">
@@ -63,6 +65,19 @@
                 </div>
                 {% endfor %}
             {% endif %}
+        </div>
+    </section>
+    <section>
+        <h2 class="discover-title">Fan Favourite</h2>
+        <div class="movie-list-container">
+            {% for movie in movies %}
+            <div class="movie-card">
+                <div class="movie-content">
+                    <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
+                    <h3 class="movie-title">{{movie.title}}</h3>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </section>
 
