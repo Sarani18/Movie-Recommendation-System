@@ -39,7 +39,7 @@
     {% if search_query is none %}
     <section>
         <h2 class="discover-title">Discover Movies</h2>
-        <div class="movie-list-container">
+        <div class="movie-list-scroller">
             {% for movie in data %}
             <div class="movie-card" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                 <div class="movie-content">
@@ -55,15 +55,20 @@
         </div>
     </section>
     {% endif %}
+    {% if search_query %}
     <section id="recommendations">
         <h2 class="discover-title">Recommended Movies</h2>
-        <div class="movie-list-container" id="recommended-movies">
+        <div class="movie-list-scroller" id="recommended-movies">
             {% if search_query %}
                 {% for movie in recommended_movies %}
                 <div class="movie-card" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                     <a href="{{ url_for('movie_details', movie_id=movie.movie_id) }}" class="movie-content">
                         <div class="movie-content">
-                            <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
+                            {% if movie.poster_path == None %}
+                            <img src="{{ url_for('static', filename='strawHat.jpg') }}" class="movie-poster">
+                            {% else %}
+                            <img src="  {{movie.poster_path}}" class="movie-poster">
+                            {% endif %}
                             <h3 class="movie-title">{{movie.title}}</h3>
                             <div class="overview">
                                 <h4></h4>
@@ -76,6 +81,7 @@
             {% endif %}
         </div>
     </section>
+    {% endif %}
 
 </body>
 <script>

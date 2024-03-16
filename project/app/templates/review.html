@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exit Review Popup</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <!-- Review popup content -->
+    <div id="exit-review-popup" class="exit-review-popup">
+        <div class="exit-review-popup-content">
+            <h2>Thank you for visiting!</h2>
+            <p>Before you leave, please rate your experience:</p>
+            <div class="star-rating" id="star-rating">
+                <span class="star" onclick="rateExperience(1)">&#9734;</span>
+                <span class="star" onclick="rateExperience(2)">&#9734;</span>
+                <span class="star" onclick="rateExperience(3)">&#9734;</span>
+                <span class="star" onclick="rateExperience(4)">&#9734;</span>
+                <span class="star" onclick="rateExperience(5)">&#9734;</span>
+            </div>
+            <button onclick="submitReview()">Submit Review</button>
+        </div>
+    </div>
+    
+    <h1>Welcome to the Movie Page</h1>
+    <p>Content of your movie page goes here...</p>
+    <script>
+        // Function to open the exit review popup when leaving the page
+    window.addEventListener('beforeunload', function (e) {
+        document.getElementById('exit-review-popup').style.display = 'block';
+        return null; // This prevents the default browser popup from appearing
+    });
+    </script>
+    
+    <script>
+        // Function to rate the experience
+    function rateExperience(stars) {
+        var starRating = document.getElementById('star-rating');
+        var stars = starRating.getElementsByClassName('star');
+    
+        for (var i = 0; i < stars.length; i++) {
+            if (i < stars) {
+                stars[i].classList.add('selected');
+            } else {
+                stars[i].classList.remove('selected');
+            }
+        }
+    }
+    </script>
+    
+    <script>
+        // Function to submit the review
+    function submitReview() {
+        // Here you can implement the logic to submit the review to the server
+        // For example, send an AJAX request with the selected rating
+        // After submitting the review, close the popup
+        document.getElementById('exit-review-popup').style.display = 'none';
+    }
+    </script>
+</body>
+
+
+
+</html>

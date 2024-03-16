@@ -24,27 +24,6 @@
             color: #ffffff;
             border-color: #000000;
         }
-        /* Navigation button styles */
-        .scroll-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.7);
-            color: #000000;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1; /* Ensure buttons appear above movie cards */
-        }
-
-        .scroll-left {
-            left: 0;
-        }
-
-        .scroll-right {
-            right: 0;
-        }
     </style>
 </head>
 
@@ -59,18 +38,14 @@
         </form>
     </header>
     {% if search_query is none %}
-    <section>
+    <section id = "hey">
         <h2 class="discover-title">Movies for you</h2>
         <div class="movie-list-container">
             {% for movie in data %}
             <div class="movie-card" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                 <a href="{{ url_for('movie_details', movie_id=movie.movie_id) }}" class="movie-content">
                     <div class="movie-content">
-                        {% if movie.poster_path == None %}
-                        <img src="{{ url_for('static', filename='strawHat.jpg') }}" class="movie-poster">
-                        {% else %}
-                        <img src="  {{movie.poster_path}}" class="movie-poster">
-                        {% endif %}
+                        <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
                         <h3 class="movie-title">{{movie.title}}</h3>
                         <div class="overview">
                             <h4></h4>
@@ -83,19 +58,15 @@
         </div>
     </section>
     {% endif %}
-    {% if search_query %}
     <section id="recommendations">
         <h2 class="discover-title">Recommended Movies</h2>
-        <div class="movie-list-scroller" id="recommended-movies">
+        <div class="movie-list-container" id="recommended-movies">
+            {% if search_query %}
                 {% for movie in recommended_movies %}
                 <div class="movie-card" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                     <a href="{{ url_for('movie_details', movie_id=movie.movie_id) }}" class="movie-content">
                         <div class="movie-content">
-                            {% if movie.poster_path == None %}
-                            <img src="{{ url_for('static', filename='strawHat.jpg') }}" class="movie-poster">
-                            {% else %}
-                            <img src="  {{movie.poster_path}}" class="movie-poster">
-                            {% endif %}
+                            <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
                             <h3 class="movie-title">{{movie.title}}</h3>
                             <div class="overview">
                                 <h4></h4>
@@ -105,22 +76,18 @@
                     </a>
                 </div>
                 {% endfor %}
+            {% endif %}
         </div>
     </section>
-    {% endif %}
     {% if movies %}
     <section>
         <h2 class="discover-title">Fan Favourite</h2>
-        <div class="movie-list-scroller">
+        <div class="movie-list-container">
             {% for movie in movies %}
             <div class="movie-card" onmouseenter="showOverview(event, '{{ movie.overview }}')" onmouseleave="hideOverview(event)">
                 <a href="{{ url_for('movie_details', movie_id=movie.movie_id) }}" class="movie-content">
                     <div class="movie-content">
-                        {% if movie.poster_path == None %}
-                        <img src="{{ url_for('static', filename='strawHat.jpg') }}" class="movie-poster">
-                        {% else %}
-                        <img src="  {{movie.poster_path}}" class="movie-poster">
-                        {% endif %}
+                        <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="movie-poster">
                         <h3 class="movie-title">{{movie.title}}</h3>
                         <div class="overview">
                             <h4></h4>
@@ -136,32 +103,68 @@
 
 </body>
 <script>
-    // Function to scroll movies container left or right
-    function scrollMovies(direction, sectionId) {
-        const container = document.getElementById(sectionId).querySelector('.movie-list-container');
-        const scrollDistance = 200; // Adjust as needed
+    document.addEventListener('DOMContentLoaded', function () {
+        let recommendationsSection = document.getElementById('hey');
+        recommendationsSection.style.display = 'none'; // Initially hide the recommendations section
 
-        if (direction === 'left') {
-            container.scrollLeft -= scrollDistance;
-        } else if (direction === 'right') {
-            container.scrollLeft += scrollDistance;
-        }
+        // Fetch recommended movies asynchronously
+        fetch('/home') // Endpoint to fetch recommendations
+            .then(response => response.json())
+            .then(data => {
+                // Update the UI with recommended movies
+                let recommendedMoviesContainer = document.getElementById('recommended-movies');
+                data.forEach(movie => {
+                    let movieCard = createMovieCard({{ movie }});
+                    recommendedMoviesContainer.appendChild(movieCard);
+                });
+                recommendationsSection.style.display = 'block'; // Show the recommendations section after data is fetched
+            })
+            .catch(error => {
+                console.error('Error fetching recommended movies:', error);
+            });
+    });
+
+    // Function to create a movie card
+    function createMovieCard(movie) {
+        let apiKey = "ff1e18b29203a4007ed0df1907cccf71";
+        let base_url = "https://api.themoviedb.org/3/movie/"
+        let movieCard = document.createElement('div');
+        movieCard.classList.add('movie-card');
+
+        let movieContent = document.createElement('a');
+        movieContent.classList.add('movie-content');
+        movieContent.href = "{{ url_for('movie_details', movie_id=0) }}" + movie.movie_id;
+
+        let movieDetails = `
+            <div class="movie-content">
+                <img src="${base_url}${movie_id}?api_key=${api_key}&language=en-US" class="movie-poster">
+                <h3 class="movie-title">${movie.title}</h3>
+                <div class="overview">
+                    <h4>Overview</h4>
+                    <p>${movie.overview}</p>
+                </div>
+            </div>
+        `;
+        movieContent.innerHTML = movieDetails;
+
+        movieCard.appendChild(movieContent);
+        return movieCard;
     }
 </script>
 <script>
     // JavaScript code to set the display property based on the search_query value
     document.addEventListener('DOMContentLoaded', function() {
-        var recommendationsSection = document.getElementById('recommendations');
+        let recommendationsSection = document.getElementById('recommendations');
         recommendationsSection.style.display = '{{ "block" if search_query else "none" }}';
     });
 </script>
 
 <script>
     function showOverview(event, overview) {
-        var movieCard = event.currentTarget;
-        var overviewDiv = movieCard.querySelector('.overview');
-        var overviewContent = overviewDiv.querySelector('p');
-        var overviewTitle = overviewDiv.querySelector('h4');
+        let movieCard = event.currentTarget;
+        let overviewDiv = movieCard.querySelector('.overview');
+        let overviewContent = overviewDiv.querySelector('p');
+        let overviewTitle = overviewDiv.querySelector('h4');
 
         overviewTitle.textContent = 'Overview';
         overviewContent.textContent = overview;
@@ -170,15 +173,15 @@
     }
 
     function hideOverview(event) {
-        var movieCard = event.currentTarget;
-        var overviewDiv = movieCard.querySelector('.overview');
+        let movieCard = event.currentTarget;
+        let overviewDiv = movieCard.querySelector('.overview');
         overviewDiv.style.transform = 'translateY(101%)';
     }
 </script>
 
 <script>
     function handleMovieClick(movie_id) {
-        var movieDetailsUrl = "{{ url_for('movie_details', movie_id=0) }}" + movie_id;
+        let movieDetailsUrl = "{{ url_for('movie_details', movie_id=0) }}" + movie_id;
         window.location.href = movieDetailsUrl.replace('0', '');  // Remove the leading 0
     }
 </script>

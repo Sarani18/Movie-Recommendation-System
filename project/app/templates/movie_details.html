@@ -90,7 +90,24 @@
         .cast-crew-item {
             font-size: 16px; /* Adjust font size for cast and crew names */
         }
+        .discover-button {
+            display: inline-block;
+            padding: 10px 20px; /* Adjust padding as needed */
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            border: 2px solid #000000;
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        
+        .discover-button:hover {
+            background-color: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
     </style>
+        
 </head>
 
 <body>
@@ -118,9 +135,8 @@
                 {% endfor %}
             </ul>
         </div>
-
+        <a href="/review" class="discover-button">Rate</a>
         <img src="https://image.tmdb.org/t/p/w500/{{ movie_details.poster_path }}" alt="Movie Poster" class="movie-poster">
     </div>
 </body>
-
 </html>
