@@ -65,7 +65,7 @@
                     <a href="{{ url_for('movie_details', movie_id=movie.movie_id) }}" class="movie-content">
                         <div class="movie-content">
                             {% if movie.poster_path == None %}
-                            <img src="{{ url_for('static', filename='strawHat.jpg') }}" class="movie-poster">
+                            <img src="{{ url_for('static', filename='luffy.jpg') }}" class="movie-poster">
                             {% else %}
                             <img src="  {{movie.poster_path}}" class="movie-poster">
                             {% endif %}

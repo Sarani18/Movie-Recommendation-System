@@ -135,8 +135,12 @@
                 {% endfor %}
             </ul>
         </div>
-        <a href="/review" class="discover-button">Rate</a>
-        <img src="https://image.tmdb.org/t/p/w500/{{ movie_details.poster_path }}" alt="Movie Poster" class="movie-poster">
+        <a href="{{ url_for('review', movie_id=movie_details.movie_id) }}" class="discover-button">Rate</a>
+            {% if movie.poster_path == None %}
+            <img src="{{ url_for('static', filename='luffy.jpg') }}" class="movie-poster">
+            {% else %}
+            <img src="  {{movie.poster_path}}" class="movie-poster">
+            {% endif %}
     </div>
 </body>
 </html>

@@ -3,63 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exit Review Popup</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
-    <!-- Review popup content -->
-    <div id="exit-review-popup" class="exit-review-popup">
-        <div class="exit-review-popup-content">
-            <h2>Thank you for visiting!</h2>
-            <p>Before you leave, please rate your experience:</p>
-            <div class="star-rating" id="star-rating">
-                <span class="star" onclick="rateExperience(1)">&#9734;</span>
-                <span class="star" onclick="rateExperience(2)">&#9734;</span>
-                <span class="star" onclick="rateExperience(3)">&#9734;</span>
-                <span class="star" onclick="rateExperience(4)">&#9734;</span>
-                <span class="star" onclick="rateExperience(5)">&#9734;</span>
-            </div>
-            <button onclick="submitReview()">Submit Review</button>
-        </div>
-    </div>
-    
-    <h1>Welcome to the Movie Page</h1>
-    <p>Content of your movie page goes here...</p>
+    <title>Rating Page</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-section {
+            margin-right: 20px;
+        }
+
+        .stars {
+            display: inline-block;
+        }
+
+        .star {
+            font-size: 75px;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .active {
+            color: gold;
+        }
+
+        .review-textbox {
+            margin-top: 20px;
+        }
+
+        .submit-button {
+            margin-top: 20px;
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
     <script>
-        // Function to open the exit review popup when leaving the page
-    window.addEventListener('beforeunload', function (e) {
-        document.getElementById('exit-review-popup').style.display = 'block';
-        return null; // This prevents the default browser popup from appearing
-    });
-    </script>
-    
-    <script>
-        // Function to rate the experience
-    function rateExperience(stars) {
-        var starRating = document.getElementById('star-rating');
-        var stars = starRating.getElementsByClassName('star');
-    
-        for (var i = 0; i < stars.length; i++) {
-            if (i < stars) {
-                stars[i].classList.add('selected');
-            } else {
-                stars[i].classList.remove('selected');
+        function highlightStars(num) {
+            let stars = document.getElementsByClassName("star");
+            for (let i = 0; i < num; i++) {
+                stars[i].classList.add("active");
+            }
+            for (let i = num; i < stars.length; i++) {
+                stars[i].classList.remove("active");
             }
         }
-    }
+
+        function submitRating() {
+            const rating = document.getElementsByClassName("active").length;
+            const review = document.getElementById("review").value;
+
+            // Send the rating and review to Flask using fetch or AJAX
+            fetch('/submit_rating', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rating: rating, review: review })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Rating and review submitted successfully!');
+					history.back();
+                } else {
+                    alert('Failed to submit rating and review.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
     </script>
-    
-    <script>
-        // Function to submit the review
-    function submitReview() {
-        // Here you can implement the logic to submit the review to the server
-        // For example, send an AJAX request with the selected rating
-        // After submitting the review, close the popup
-        document.getElementById('exit-review-popup').style.display = 'none';
-    }
-    </script>
+</head>
+<body>
+    <h1>Please Rate this Movie:</h1>
+    <div class="details-container">
+        <div class="details-info">
+            <p class="details-text title-text"><strong>Title:</strong> <strong>{{ movie_details.title }}</strong></p>
+        </div>
+        <div class="rating-section">
+            <div class="stars">
+                <span class="star" onclick="highlightStars(1)">☆</span>
+                <span class="star" onclick="highlightStars(2)">☆</span>
+                <span class="star" onclick="highlightStars(3)">☆</span>
+                <span class="star" onclick="highlightStars(4)">☆</span>
+                <span class="star" onclick="highlightStars(5)">☆</span>
+            </div>
+            <div><p>Please write the review about the story, acting, actors, cinematography, score of the movie</p></div>
+            <div class="review-textbox">
+                <textarea id="review" rows="4" cols="50" placeholder="Leave a review..."></textarea>
+            </div>
+            <button class="submit-button" onclick="submitRating()">Submit</button>
+        </div>    
+    </div>
 </body>
-
-
-
 </html>
