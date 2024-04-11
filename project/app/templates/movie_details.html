@@ -136,10 +136,10 @@
             </ul>
         </div>
         <a href="{{ url_for('review', movie_id=movie_details.movie_id) }}" class="discover-button">Rate</a>
-            {% if movie.poster_path == None %}
+            {% if movie_details.poster_path == None %}
             <img src="{{ url_for('static', filename='luffy.jpg') }}" class="movie-poster">
             {% else %}
-            <img src="  {{movie.poster_path}}" class="movie-poster">
+            <img src="  {{movie_details.poster_path}}" class="movie-poster">
             {% endif %}
     </div>
 </body>

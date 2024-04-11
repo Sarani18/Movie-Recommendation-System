@@ -57,14 +57,14 @@
         function submitRating() {
             const rating = document.getElementsByClassName("active").length;
             const review = document.getElementById("review").value;
-
+            const movieId = document.getElementById("movieId").value;  // Get movieId from hidden input field
             // Send the rating and review to Flask using fetch or AJAX
             fetch('/submit_rating', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ rating: rating, review: review })
+                body: JSON.stringify({ rating: rating, review: review, movieId: movieId  })
             })
             .then(response => {
                 if (response.ok) {
@@ -77,6 +77,16 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
+    <script>
+        function updateCounter(input, maxWords) {
+            var words = input.value.split(' ');
+            if (words.length > maxWords) {
+                alert('You have exceeded the word limit of ' + maxWords);
+                input.value = words.slice(0, maxWords).join(' ');
+            }
+            document.getElementById('counter').innerText = words.length + ' / ' + maxWords;
+        }
+        </script>
 </head>
 <body>
     <h1>Please Rate this Movie:</h1>
@@ -92,10 +102,12 @@
                 <span class="star" onclick="highlightStars(4)">☆</span>
                 <span class="star" onclick="highlightStars(5)">☆</span>
             </div>
+            <input type="hidden" id="movieId" value="{{ movie_details.movie_id }}">
             <div><p>Please write the review about the story, acting, actors, cinematography, score of the movie</p></div>
-            <div class="review-textbox">
-                <textarea id="review" rows="4" cols="50" placeholder="Leave a review..."></textarea>
-            </div>
+                <div class="review-textbox">
+                    <p id="counter">0 / 10</p>
+                    <textarea id="review" rows="4" cols="50" placeholder="Leave a review..." oninput="updateCounter(this, 10)"></textarea> 
+                </div>
             <button class="submit-button" onclick="submitRating()">Submit</button>
         </div>    
     </div>
